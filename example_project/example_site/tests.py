@@ -1,4 +1,4 @@
-from django_url_security.test_url_security import UrlSecurityTestCase
+from django_url_security.url_security import UrlSecurityTestCase
 
 
 class MyTestCase(UrlSecurityTestCase):
