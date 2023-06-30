@@ -11,8 +11,10 @@ license =  "MIT"
 classifiers=[
     'License :: OSI Approved :: MIT License',
     'Natural Language :: English',
-    'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
 ]
 include = [
     "LICENSE",
@@ -20,17 +22,20 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 importlib_metadata = "^3.4.0"
+django = "^3.2"
+parameterized = "^0.9.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 mkdocs-material = "^6.1.5"
-pytest = "^6.0"
-pytest-cov = "^2.10.1"
-
-pylint = "^2.6.0"
-black = "22.3.0"
-mypy = "0.960"
+pytest = "^7.0"
+pytest-cov = "^4.1.0"
+pylint = "^2.17.0"
+black = "23.3.0"
+mypy = "1.4.1"
+pip = "^23.1.2"
+setuptools = "^68.0.0"
 
 [tool.black]
 line-length=100
