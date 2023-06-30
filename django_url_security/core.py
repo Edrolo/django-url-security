@@ -20,6 +20,7 @@ from django.urls import (
 
 DEFAULT_URL_SECURITY_SPEC_FILE_PATH = Path(__file__).parent / 'url_security_spec.csv'
 
+
 class ViewInfo(NamedTuple):
     name: str
     url_pattern: Any
@@ -63,7 +64,7 @@ def extract_views_from_urlpatterns(urlpatterns, base='', namespace=None) -> List
                         url_pattern=p,
                         view_func=p.callback,
                         simplified_regex=simplify_regex(f'{base}{p.pattern}'),
-                    )
+                    ),
                 )
             except ViewDoesNotExist:
                 continue
@@ -79,8 +80,10 @@ def extract_views_from_urlpatterns(urlpatterns, base='', namespace=None) -> List
                 _namespace = p.namespace or namespace
             views.extend(
                 extract_views_from_urlpatterns(
-                    patterns, base=f'{base}{p.pattern}', namespace=_namespace
-                )
+                    patterns,
+                    base=f'{base}{p.pattern}',
+                    namespace=_namespace,
+                ),
             )
         elif hasattr(p, '_get_callback'):
             # Not sure what this case covers
@@ -91,7 +94,7 @@ def extract_views_from_urlpatterns(urlpatterns, base='', namespace=None) -> List
                         url_pattern=p,
                         view_func=p._get_callback(),
                         simplified_regex=simplify_regex(f'{base}{p.pattern}'),
-                    )
+                    ),
                 )
             except ViewDoesNotExist:
                 continue
@@ -103,17 +106,20 @@ def extract_views_from_urlpatterns(urlpatterns, base='', namespace=None) -> List
                 continue
             views.extend(
                 extract_views_from_urlpatterns(
-                    patterns, base=f'{base}{p.pattern}', namespace=namespace
-                )
+                    patterns,
+                    base=f'{base}{p.pattern}',
+                    namespace=namespace,
+                ),
             )
         else:
-            raise TypeError(f'{p} does not appear to be a urlpattern object')
+            raise TypeError(f'{p} does not appear to be a urlpattern object')  # noqa: TRY003
     return views
 
 
 @functools.lru_cache(maxsize=1)
 def get_all_view_infos() -> List[ViewInfo]:
     from django.conf import settings
+
     urlconf = settings.ROOT_URLCONF
 
     urls = import_module(urlconf) if isinstance(urlconf, str) else urlconf
@@ -123,10 +129,10 @@ def get_all_view_infos() -> List[ViewInfo]:
 
 
 @functools.lru_cache(maxsize=1)
-def get_view_permission_specs(spec_file_path = DEFAULT_URL_SECURITY_SPEC_FILE_PATH) -> List[PermissionSpec]:
-    """
-    Provide an interface to get the PermissionSpecs
-    """
+def get_view_permission_specs(
+    spec_file_path=DEFAULT_URL_SECURITY_SPEC_FILE_PATH,
+) -> List[PermissionSpec]:
+    """Provide an interface to get the PermissionSpecs."""
     if not spec_file_path.exists():
         return []
 

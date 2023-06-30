@@ -1,22 +1,21 @@
 import csv
 
 from django_url_security.core import (
+    DEFAULT_URL_SECURITY_SPEC_FILE_PATH,
     PermissionSpec,
     ViewInfo,
     find_permission_spec_for_view_info,
     get_all_view_infos,
     get_view_reference,
-    DEFAULT_URL_SECURITY_SPEC_FILE_PATH,
 )
 
 
-def print_permission_spec_file(spec_file_path = DEFAULT_URL_SECURITY_SPEC_FILE_PATH):
+def print_permission_spec_file(spec_file_path=DEFAULT_URL_SECURITY_SPEC_FILE_PATH):
     """
     Used to update the permission spec file when adding new url patterns.
     Should be able to replace the file with the output of this function,
     and the new version will include the appropriate ("NEW?") entries.
     """
-
     view_infos = get_all_view_infos()
     view_info_to_permission_spec_map = {
         view_info: find_permission_spec_for_view_info(view_info) for view_info in view_infos
@@ -30,20 +29,20 @@ def print_permission_spec_file(spec_file_path = DEFAULT_URL_SECURITY_SPEC_FILE_P
         writer = csv.DictWriter(f, fieldnames=PermissionSpec._fields)
         writer.writeheader()
         writer.writerows(
-            dict(
-                status=spec.status,
-                pattern_name=spec.pattern_name,
-                reference=spec.reference,
-                simplified_regex=spec.simplified_regex,
-                is_public='PUBLIC' if spec.is_public else 'private',
-                notes=spec.notes,
-            )
+            {
+                'status': spec.status,
+                'pattern_name': spec.pattern_name,
+                'reference': spec.reference,
+                'simplified_regex': spec.simplified_regex,
+                'is_public': 'PUBLIC' if spec.is_public else 'private',
+                'notes': spec.notes,
+            }
             for spec in new_permission_specs
         )
 
 
 def generate_permission_spec(view_info: ViewInfo):
-    """Generate a new permission spec for when a new url pattern has been added"""
+    """Generate a new permission spec for when a new url pattern has been added."""
     return PermissionSpec(
         status='NEW?',
         pattern_name=view_info.name,

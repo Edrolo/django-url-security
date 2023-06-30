@@ -71,11 +71,11 @@ class UrlSecurityTestCase(TestCase):
 
     weird_ones = {
         "<class 'nap.http.decorators.except_response'>": {
-            "ViewInfo(view_func=<nap.http.decorators.except_response object at 0x7fac40e0d0d0>, regex='^api/v1/^job/$', name='job-request')",
+            "ViewInfo(view_func=<nap.http.decorators.except_response object at 0x7fac40e0d0d0>, regex='^api/v1/^job/$', name='job-request')",  # noqa: E501
         },
         "<class 'method'>": {
-            "ViewInfo(view_func=<bound method JSONRPCAPI.jsonrpc of <jsonrpc.backend.django.JSONRPCAPI object at 0x7fac40e511f0>>, regex='^liss/^rpc/?^$', name='endpoint')",
-            "ViewInfo(view_func=<bound method AdminSite.login of <django.contrib.admin.sites.AdminSite object at 0x7fac80536400>>, regex='^secret/login/', name='admin:login')",
+            "ViewInfo(view_func=<bound method JSONRPCAPI.jsonrpc of <jsonrpc.backend.django.JSONRPCAPI object at 0x7fac40e511f0>>, regex='^liss/^rpc/?^$', name='endpoint')",  # noqa: E501
+            "ViewInfo(view_func=<bound method AdminSite.login of <django.contrib.admin.sites.AdminSite object at 0x7fac80536400>>, regex='^secret/login/', name='admin:login')",  # noqa: E501
         },
     }
 
@@ -164,7 +164,7 @@ class UrlSecurityTestCase(TestCase):
                 self.fail("Expected test to raise error but it didn't")
         elif permission_spec.status == 'IGNORE':
             self.skipTest(
-                'Test needs attention - currently ignored until we figure out how to deal with it'
+                'Test needs attention - currently ignored until we figure out how to deal with it',
             )
         elif permission_spec.status == 'NEEDS_FIXTURE':
             try:
@@ -175,7 +175,7 @@ class UrlSecurityTestCase(TestCase):
                 else:
                     self.fail(
                         'Test marked as NEEDS_FIXTURE not returning 404'
-                        ' - mark as ERROR or FAILING instead?'
+                        ' - mark as ERROR or FAILING instead?',
                     )
             else:
                 self.fail("Expected test to fail based on missing fixture but it didn't")
@@ -202,8 +202,7 @@ class UrlSecurityTestCase(TestCase):
         `generate_permission_spec_file.py`.
         """
         url_pattern_set = {
-            (view_info.simplified_regex, view_info.name or '')
-            for view_info in get_all_view_infos()
+            (view_info.simplified_regex, view_info.name or '') for view_info in get_all_view_infos()
         }
         view_permission_spec_set = {
             (perm_spec.simplified_regex, perm_spec.pattern_name)
