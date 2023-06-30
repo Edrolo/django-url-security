@@ -18,7 +18,20 @@ from django.urls import (
     URLResolver,
 )
 
-DEFAULT_URL_SECURITY_SPEC_FILE_PATH = Path(__file__).parent / 'url_security_spec.csv'
+DEFAULT_URL_SECURITY_SPEC_FILENAME = 'url_security_spec.csv'
+
+
+def get_spec_file_path():
+    from django.conf import settings
+
+    base_dir = Path(settings.BASE_DIR)
+    default_spec_file_path = base_dir / DEFAULT_URL_SECURITY_SPEC_FILENAME
+
+    spec_file_path = getattr(settings, 'URL_SECURITY_SPEC_FILE_PATH', default_spec_file_path)
+    if not spec_file_path.is_absolute():
+        spec_file_path = base_dir / spec_file_path
+
+    return spec_file_path
 
 
 class ViewInfo(NamedTuple):
@@ -129,10 +142,10 @@ def get_all_view_infos() -> List[ViewInfo]:
 
 
 @functools.lru_cache(maxsize=1)
-def get_view_permission_specs(
-    spec_file_path=DEFAULT_URL_SECURITY_SPEC_FILE_PATH,
-) -> List[PermissionSpec]:
+def get_view_permission_specs(spec_file_path=None) -> List[PermissionSpec]:
     """Provide an interface to get the PermissionSpecs."""
+    spec_file_path = spec_file_path or get_spec_file_path()
+
     if not spec_file_path.exists():
         return []
 

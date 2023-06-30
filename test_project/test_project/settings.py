@@ -60,3 +60,5 @@ TIME_ZONE = 'UTC'
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+URL_SECURITY_SPEC_FILE_PATH = BASE_DIR / 'url_security_spec.csv'

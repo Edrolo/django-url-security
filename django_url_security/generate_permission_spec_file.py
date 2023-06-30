@@ -1,21 +1,24 @@
 import csv
+from pathlib import Path
 
 from django_url_security.core import (
-    DEFAULT_URL_SECURITY_SPEC_FILE_PATH,
     PermissionSpec,
     ViewInfo,
     find_permission_spec_for_view_info,
     get_all_view_infos,
+    get_spec_file_path,
     get_view_reference,
 )
 
 
-def print_permission_spec_file(spec_file_path=DEFAULT_URL_SECURITY_SPEC_FILE_PATH):
+def print_permission_spec_file(spec_file_path=None):
     """
     Used to update the permission spec file when adding new url patterns.
     Should be able to replace the file with the output of this function,
     and the new version will include the appropriate ("NEW?") entries.
     """
+    spec_file_path = spec_file_path or get_spec_file_path()
+
     view_infos = get_all_view_infos()
     view_info_to_permission_spec_map = {
         view_info: find_permission_spec_for_view_info(view_info) for view_info in view_infos
@@ -24,6 +27,9 @@ def print_permission_spec_file(spec_file_path=DEFAULT_URL_SECURITY_SPEC_FILE_PAT
         permission_spec or generate_permission_spec(view_info)
         for view_info, permission_spec in view_info_to_permission_spec_map.items()
     ]
+
+    if isinstance(spec_file_path, str):
+        spec_file_path = Path(spec_file_path)
 
     with spec_file_path.open('w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=PermissionSpec._fields)
