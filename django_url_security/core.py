@@ -127,6 +127,8 @@ def get_view_permission_specs() -> List[PermissionSpec]:
     Provide an interface to get the PermissionSpecs
     """
     spec_file_path = Path(__file__).parent / 'view_permission_specifications.csv'
+    if not spec_file_path.exists():
+        return []
 
     with spec_file_path.open() as csv_file:
         reader = csv.DictReader(csv_file)
