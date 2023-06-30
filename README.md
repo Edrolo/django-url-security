@@ -13,7 +13,7 @@ Django URL Security provides tests to ensure all the private endpoints in your D
 
 
 - Free software: MIT
-- Documentation: https://MattFisher.github.io/django-url-security.
+- Documentation: https://Edrolo.github.io/django-url-security.
 
 
 ## Features
