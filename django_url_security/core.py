@@ -18,6 +18,7 @@ from django.urls import (
     URLResolver,
 )
 
+DEFAULT_URL_SECURITY_SPEC_FILE_PATH = Path(__file__).parent / 'url_security_spec.csv'
 
 class ViewInfo(NamedTuple):
     name: str
@@ -122,11 +123,10 @@ def get_all_view_infos() -> List[ViewInfo]:
 
 
 @functools.lru_cache(maxsize=1)
-def get_view_permission_specs() -> List[PermissionSpec]:
+def get_view_permission_specs(spec_file_path = DEFAULT_URL_SECURITY_SPEC_FILE_PATH) -> List[PermissionSpec]:
     """
     Provide an interface to get the PermissionSpecs
     """
-    spec_file_path = Path(__file__).parent / 'view_permission_specifications.csv'
     if not spec_file_path.exists():
         return []
 
@@ -176,7 +176,7 @@ def get_view_reference(func) -> str:
         func_name = func.__name__
     elif hasattr(func, '__class__'):
         # Class-based views will have __class__
-        func_name = '%s()' % func.__class__.__name__
+        func_name = f'{func.__class__.__name__}()'
     else:
         # Dunno what will get here
         func_name = re.sub(r' at 0x[0-9a-f]+', '', repr(func))
