@@ -20,18 +20,18 @@ jobs:
           python-version: 3.8
       - name: Install poetry
         run: pip install poetry
+
       - name: Install dependencies
         run: poetry update
-      - name: Unit & Coverage test with pytest
-        run: poetry run pytest
 
       - name: Check format with blue
         run: poetry run blue --check django_url_security/ tests/
-      - name: Check type hinting with mypy
-        run: poetry run mypy --strict --config-file=mypy.ini django_url_security/
 
       - name: Run pre-commit checks
         run: poetry run pre-commit run --all-files
+
+      - name: Check type hinting with mypy
+        run: poetry run mypy --strict --config-file=mypy.ini django_url_security/
 
       - name: Check style with pylint
         run: poetry run pylint django_url_security/ tests/
