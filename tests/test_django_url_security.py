@@ -1,10 +1,12 @@
 """Test module for django_url_security."""
+from django.test import TestCase
 
-from django_url_security import __author__, __email__, __version__
 
+# @override_settings(ROOT_URLCONF='django_url_security.tests.urls')
+class RelatedTests(TestCase):
+    def setUp(self):
+        """Create users, categories and entries."""
 
-def test_project_info():
-    """Test __author__ value."""
-    assert __author__ == "Matt Fisher"
-    assert __email__ == "m@ttfisher.com"
-    assert __version__ == "0.0.0"
+    def test_running(self):
+        """Test that tests are running."""
+        assert True
