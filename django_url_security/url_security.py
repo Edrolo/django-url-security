@@ -70,7 +70,7 @@ class UrlSecurityTestCase(TestCase):
     in the spec file to `OK`, and you'll see the real errors with tracebacks on the next test run.
     """
 
-    weird_ones = {
+    _weird_ones = {  # noqa: RUF012
         "<class 'nap.http.decorators.except_response'>": {
             "ViewInfo(view_func=<nap.http.decorators.except_response object at 0x7fac40e0d0d0>, regex='^api/v1/^job/$', name='job-request')",  # noqa: E501
         },
@@ -85,7 +85,14 @@ class UrlSecurityTestCase(TestCase):
     def setUp(self) -> None:
         self.request_factory = RequestFactory()
 
-    def request(self, view_func, url_pattern, method='GET', user=None, path='/fakeurl/'):
+    def request(  # noqa: PLR0913
+        self,
+        view_func,
+        url_pattern,
+        method='GET',
+        user=None,
+        path='/fakeurl/',
+    ):
         request = self.request_factory.request(method=method, path=path)
         request.user = user or AnonymousUser()
         view_kwargs = figure_out_view_kwargs(view_func, url_pattern)
@@ -151,7 +158,7 @@ class UrlSecurityTestCase(TestCase):
             lambda: self.assert_view_is_not_public(view_info.view_func, view_info.url_pattern),
         )
 
-    def assert_outcome_matches_status(self, permission_spec, callable_assertion):
+    def assert_outcome_matches_status(self, permission_spec, callable_assertion):  # noqa: PLR0912
         if permission_spec.status == 'FAILING':
             try:
                 callable_assertion()

@@ -59,7 +59,11 @@ class PermissionSpec(NamedTuple):
     notes: str = ''
 
 
-def extract_views_from_urlpatterns(urlpatterns, base='', namespace=None) -> List[ViewInfo]:
+def extract_views_from_urlpatterns(  # noqa: PLR0912
+    urlpatterns,
+    base='',
+    namespace=None,
+) -> List[ViewInfo]:
     """
     Return a list of ViewInfo objects from a list of urlpatterns.
     Originally copied from django_extensions.management.commands.show_urls.Command

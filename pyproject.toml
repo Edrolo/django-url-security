@@ -39,6 +39,7 @@ pre-commit = "^3.3.3"
 blue = "^0.9.1"
 pytest-django = "^4.5.2"
 tox = "^4.6.4"
+ruff = "^0.0.278"
 
 [tool.blue]
 line-length=100
@@ -102,10 +103,10 @@ select = [
 #    'PD', # pandas-vet
 #    'PGH', # pygrep-hooks
 #    'PL', # Pylint (PLC*)
-#    'PLC', # Pylint Convention
-#    'PLE', # Pylint Error
-#    'PLR', # Pylint Refactor
-#    'PLW', # Pylint Warning
+    'PLC', # Pylint Convention
+    'PLE', # Pylint Error
+    'PLR', # Pylint Refactor
+    'PLW', # Pylint Warning
     'TRY', # tryceratops
 #    'NPY', # NumPy-specific rules
     'RUF', # Ruff-specific rules
