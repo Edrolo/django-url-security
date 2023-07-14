@@ -190,11 +190,14 @@ def find_permission_spec_for_view_info(view_info: ViewInfo):
 
 def get_view_reference(func) -> str:
     """Extracted from django_extensions.management.commands.show_urls"""
-    if hasattr(func, '__name__'):
-        # Functional views will have __name__
+    if hasattr(func, 'view_class'):
+        # Class-based views will have `view_class` in Django>=4.0
+        func_name = func.view_class.__name__
+    elif hasattr(func, '__name__'):
+        # Functional views will have `__name__`
         func_name = func.__name__
     elif hasattr(func, '__class__'):
-        # Class-based views will have __class__
+        # Class-based views will have `__class__` in Django<4.0
         func_name = f'{func.__class__.__name__}()'
     else:
         # Dunno what will get here
