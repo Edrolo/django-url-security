@@ -21,13 +21,13 @@ from django.urls import (
 DEFAULT_URL_SECURITY_SPEC_FILENAME = 'url_security_spec.csv'
 
 
-def get_spec_file_path():
+def get_spec_file_path() -> Path:
     from django.conf import settings
 
     base_dir = Path(settings.BASE_DIR)
     default_spec_file_path = base_dir / DEFAULT_URL_SECURITY_SPEC_FILENAME
 
-    spec_file_path = getattr(settings, 'URL_SECURITY_SPEC_FILE_PATH', default_spec_file_path)
+    spec_file_path = Path(getattr(settings, 'URL_SECURITY_SPEC_FILE_PATH', default_spec_file_path))
     if not spec_file_path.is_absolute():
         spec_file_path = base_dir / spec_file_path
 

@@ -13,6 +13,7 @@ from .core import (
     figure_out_view_kwargs,
     find_permission_spec_for_view_info,
     get_all_view_infos,
+    get_spec_file_path,
     get_view_permission_specs,
     view_should_be_public,
 )
@@ -125,9 +126,12 @@ class UrlSecurityTestCase(TestCase):
     @parameterized.expand(
         lambda: ((info,) for info in get_all_view_infos() if view_should_be_public(info)),
         name_func=get_test_name,
+        skip_on_empty=True,
     )
     def test_public_views_are_public(self, view_info: ViewInfo):
         permission_spec = find_permission_spec_for_view_info(view_info)
+        if not permission_spec:  # sourcery skip: no-conditionals-in-tests
+            self.fail(f'No permission spec found for view {view_info}')
         self.assert_outcome_matches_status(
             permission_spec,
             lambda: self.assert_view_is_public(view_info.view_func, view_info.url_pattern),
@@ -136,9 +140,12 @@ class UrlSecurityTestCase(TestCase):
     @parameterized.expand(
         lambda: ((info,) for info in get_all_view_infos() if not view_should_be_public(info)),
         name_func=get_test_name,
+        skip_on_empty=True,
     )
     def test_non_public_views_are_not_public(self, view_info: ViewInfo):
         permission_spec = find_permission_spec_for_view_info(view_info)
+        if not permission_spec:  # sourcery skip: no-conditionals-in-tests
+            self.fail(f'No permission spec found for view {view_info}')
         self.assert_outcome_matches_status(
             permission_spec,
             lambda: self.assert_view_is_not_public(view_info.view_func, view_info.url_pattern),
@@ -193,6 +200,20 @@ class UrlSecurityTestCase(TestCase):
         acceptable_status_codes = [301, 302, 401, 403, 405]
         response = self.get(view_func, url_pattern=url_pattern)
         self.assertIn(response.status_code, acceptable_status_codes)
+
+    def test__specification_file_exists(self):
+        """
+        Test that the permission specification file exists.
+        (Named with __ to ensure it runs first)
+        """
+        spec_file_path = get_spec_file_path()
+        self.assertTrue(
+            spec_file_path.exists(),
+            (
+                f'No permission specification file found at {spec_file_path}, please run '
+                '`manage.py export_url_security_file` to generate it.'
+            ),
+        )
 
     def test_all_url_entries_are_specified(self):
         """
