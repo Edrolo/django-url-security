@@ -2,8 +2,8 @@
 
 [tool.poetry]
 name = "django_url_security"
-version = "0.0.0"
-homepage = "https://github.com/MattFisher/django-url-security"
+version = "0.0.1"
+homepage = "https://github.com/Edrolo/django-url-security"
 description = "Django URL Security provides tests to ensure all the private endpoints in your Django project are private."
 authors = ["Matt Fisher <m@ttfisher.com>"]
 readme = "README.md"
