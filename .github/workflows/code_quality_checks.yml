@@ -31,3 +31,6 @@ jobs:
         run: poetry run blue --check django_url_security/ tests/
       - name: Check type hinting with mypy
         run: poetry run mypy --strict --config-file=mypy.ini django_url_security/
+
+      - name: Run pre-commit checks
+        run: poetry run pre-commit run --all-files
