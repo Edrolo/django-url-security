@@ -56,6 +56,7 @@ class PermissionSpec(NamedTuple):
     reference: str
     simplified_regex: str
     is_public: bool = True
+    fixture_name: str = ''
     notes: str = ''
 
 
@@ -162,6 +163,7 @@ def get_view_permission_specs(spec_file_path=None) -> List[PermissionSpec]:
                 reference=row['reference'],
                 simplified_regex=row['simplified_regex'],
                 is_public=row['is_public'] == 'PUBLIC',
+                fixture_name=row.get('fixture_name', ''),
                 notes=row['notes'],
             )
             for row in reader

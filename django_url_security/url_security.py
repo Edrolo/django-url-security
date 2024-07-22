@@ -8,6 +8,8 @@ from django.http import (
 from django.test import RequestFactory, TestCase
 from parameterized import parameterized
 
+from django_url_security.fixtures import fixture_module
+
 from .core import (
     ViewInfo,
     figure_out_view_kwargs,
@@ -139,6 +141,13 @@ class UrlSecurityTestCase(TestCase):
         permission_spec = find_permission_spec_for_view_info(view_info)
         if not permission_spec:  # sourcery skip: no-conditionals-in-tests
             self.fail(f'No permission spec found for view {view_info}')
+        if permission_spec.fixture_name:
+            try:
+                fixture_factory = getattr(fixture_module, permission_spec.fixture_name)
+                _fixture = fixture_factory()
+            except AttributeError:
+                self.fail(f'Fixture {permission_spec.fixture_name} missing for view {view_info}')
+                return
         self.assert_outcome_matches_status(
             permission_spec,
             lambda: self.assert_view_is_public(view_info.view_func, view_info.url_pattern),

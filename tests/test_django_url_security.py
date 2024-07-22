@@ -10,3 +10,9 @@ class RelatedTests(TestCase):
     def test_running(self):
         """Test that tests are running."""
         assert True
+
+
+"""
+Tests to write:
+- Test that tests fail when a specified fixture is missing
+"""

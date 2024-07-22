@@ -41,6 +41,7 @@ def print_permission_spec_file(spec_file_path=None):
                 'reference': spec.reference,
                 'simplified_regex': spec.simplified_regex,
                 'is_public': 'PUBLIC' if spec.is_public else 'private',
+                'fixture_name': spec.fixture_name,
                 'notes': spec.notes,
             }
             for spec in new_permission_specs
