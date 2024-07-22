@@ -24,10 +24,10 @@ This will generate a CSV file in the root directory of your Django project listi
 
 ```
 status,pattern_name,reference,simplified_regex,is_public,notes
-NEW?,landing_page_view,tod_django.views.landing_page_view,/,private,
-NEW?,login_view,tod_django.views.login_view,/login/,private,
-NEW?,subjects_view,tod_django.views.subjects_view,/subjects/,private,
-NEW?,quiz_view_stub,tod_django.views.quiz_view,/subjects/<path:object_id>/quiz/,private,
+NEW?,landing_page_view,my_app.views.landing_page_view,/,private,
+NEW?,login_view,my_app.views.login_view,/login/,private,
+NEW?,subjects_view,my_app.views.subjects_view,/subjects/,private,
+NEW?,quiz_view_stub,my_app.views.quiz_view,/subjects/<path:object_id>/quiz/,private,
 ```
 
 Now run the tests for the project to confirm the URL security tests are in place. Alternatively run _only_ the URL security tests by passing `django_url_security.url_security` to the `test` command.
@@ -44,16 +44,16 @@ Under the current configuration, the tests should pass because the `status` for 
 
 ```
 status,pattern_name,reference,simplified_regex,is_public,notes
-OK,landing_page_view,tod_django.views.landing_page_view,/,PUBLIC,
-OK,login_view,tod_django.views.login_view,/login/,PUBLIC,
-OK,subjects_view,tod_django.views.subjects_view,/subjects/,private,
-FAILING,quiz_view_stub,tod_django.views.quiz_view,/subjects/<path:object_id>/quiz/,private,Not yet implemented
+OK,landing_page_view,my_app.views.landing_page_view,/,PUBLIC,
+OK,login_view,my_app.views.login_view,/login/,PUBLIC,
+OK,subjects_view,my_app.views.subjects_view,/subjects/,private,
+FAILING,quiz_view_stub,my_app.views.quiz_view,/subjects/<path:object_id>/quiz/,private,Not yet implemented
 ```
 
 In this case, our URL security tests will only pass if:
 
-- `tod_django.views.landing_page_view` and `tod_django.views.login_view` are publicly accessible and returns `200 OK` in response to HTTP `GET` requests.
-- `tod_django.views.subjects_view` is only accessible to authenticated users and returns `200 OK` in response to HTTP `GET` requests from authenticated users.
-- `tod_django.views.quiz_view` is only accessible to authenticated users and returns a failure status in response to HTTP `GET` requests from authenticated users. Note that the `notes` field can be used to annotate endpoints with additional information which is useful when, for example, documenting expected failures.
+- `my_app.views.landing_page_view` and `my_app.views.login_view` are publicly accessible and returns `200 OK` in response to HTTP `GET` requests.
+- `my_app.views.subjects_view` is only accessible to authenticated users and returns `200 OK` in response to HTTP `GET` requests from authenticated users.
+- `my_app.views.quiz_view` is only accessible to authenticated users and returns a failure status in response to HTTP `GET` requests from authenticated users. Note that the `notes` field can be used to annotate endpoints with additional information which is useful when, for example, documenting expected failures.
 
 If each endpoint conforms to the behaviour described above, the tests for the project should now pass.
