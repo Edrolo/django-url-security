@@ -18,7 +18,12 @@ from django.urls import (
     URLResolver,
 )
 
+# Default filename for the URL security spec file
+# This file should be in the BASE_DIR of your Django project
 DEFAULT_URL_SECURITY_SPEC_FILENAME = 'url_security_spec.csv'
+# Default python module to import your site's fixtures from
+# By default this will be in the same folder as manage.py
+DEFAULT_FIXTURE_MODULE = 'url_security_fixtures'
 
 
 def get_spec_file_path() -> Path:
