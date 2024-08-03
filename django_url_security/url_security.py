@@ -8,8 +8,6 @@ from django.http import (
 from django.test import RequestFactory, TestCase
 from parameterized import parameterized
 
-from django_url_security.fixtures import fixture_module
-
 from .core import (
     ViewInfo,
     figure_out_view_kwargs,
@@ -82,10 +80,22 @@ class UrlSecurityTestCase(TestCase):
         },
     }
 
+    # Override this in your subclass
+    url_fixture_module = None
+
     # django.views.generic.base.RedirectView don't get names
 
     def setUp(self) -> None:
         self.request_factory = RequestFactory()
+
+    def get_fixture(self, fixture_name: str):
+        if self.url_fixture_module is None:
+            self.fail('No fixture module set')
+        try:
+            fixture_factory = getattr(self.url_fixture_module, fixture_name)
+        except AttributeError:
+            self.fail(f'Fixture {fixture_name} missing')
+        return fixture_factory
 
     def request(  # noqa: PLR0913
         self,
@@ -142,12 +152,8 @@ class UrlSecurityTestCase(TestCase):
         if not permission_spec:  # sourcery skip: no-conditionals-in-tests
             self.fail(f'No permission spec found for view {view_info}')
         if permission_spec.fixture_name:
-            try:
-                fixture_factory = getattr(fixture_module, permission_spec.fixture_name)
-                _fixture = fixture_factory()
-            except AttributeError:
-                self.fail(f'Fixture {permission_spec.fixture_name} missing for view {view_info}')
-                return
+            fixture_factory = self.get_fixture(permission_spec.fixture_name)
+            _fixture = fixture_factory()
         self.assert_outcome_matches_status(
             permission_spec,
             lambda: self.assert_view_is_public(view_info.view_func, view_info.url_pattern),

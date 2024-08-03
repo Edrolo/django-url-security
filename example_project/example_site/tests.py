@@ -1,5 +1,7 @@
-from django_url_security.url_security import UrlSecurityTestCase
+import url_security_fixtures
+
+from django_url_security import url_security
 
 
-class MyTestCase(UrlSecurityTestCase):
-    pass
+class MyTestCase(url_security.UrlSecurityTestCase):
+    url_fixture_module = url_security_fixtures
