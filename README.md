@@ -6,7 +6,7 @@
 ![Django versions](https://img.shields.io/pypi/frameworkversions/django/django-url-security)
 [![GitHub license](https://img.shields.io/github/license/Edrolo/django-url-security.svg)](https://github.com/Edrolo/django-url-security/blob/main/LICENSE)
 
-[![Code style: blue](https://img.shields.io/badge/code_style-blue-blue.svg)](https://blue.readthedocs.io/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 
 Django URL Security provides tests to ensure all the private endpoints in your Django project are private.

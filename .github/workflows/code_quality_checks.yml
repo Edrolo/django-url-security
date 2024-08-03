@@ -24,9 +24,6 @@ jobs:
       - name: Install dependencies
         run: poetry update
 
-      - name: Check format with blue
-        run: poetry run blue --check django_url_security/ tests/
-
       - name: Run pre-commit checks
         run: poetry run pre-commit run --all-files
 
