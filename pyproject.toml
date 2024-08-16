@@ -48,7 +48,7 @@ setuptools = "^68.0.0"
 pre-commit = "^3.3.3"
 pytest-django = "^4.5.2"
 tox = "^4.6.4"
-ruff = "^0.0.278"
+ruff = "^0.5.6"
 
 [tool.blue]
 line-length=100
